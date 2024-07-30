@@ -1141,6 +1141,7 @@ static bool process_get_descriptor(uint8_t rhport, tusb_control_request_t const 
   }
 }
 
+#ifndef CFG_TUSB_ZEPHYR_PORTABLE
 //--------------------------------------------------------------------+
 // DCD Event Handler
 //--------------------------------------------------------------------+
@@ -1212,6 +1213,7 @@ TU_ATTR_FAST_FUNC void dcd_event_handler(dcd_event_t const* event, bool in_isr) 
     queue_event(event, in_isr);
   }
 }
+#endif
 
 //--------------------------------------------------------------------+
 // USBD API For Class Driver
@@ -1301,8 +1303,6 @@ bool usbd_edpt_release(uint8_t rhport, uint8_t ep_addr) {
 }
 
 bool usbd_edpt_xfer(uint8_t rhport, uint8_t ep_addr, uint8_t* buffer, uint16_t total_bytes) {
-  rhport = _usbd_rhport;
-
   uint8_t const epnum = tu_edpt_number(ep_addr);
   uint8_t const dir = tu_edpt_dir(ep_addr);
 
